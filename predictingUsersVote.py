@@ -134,13 +134,52 @@ for features in feature_list[9:]:
         print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
 
 
-#todo: Prep for classifiers
+#todo: Prep for classifiers - log votes + qcuts
+print('Log Votes QCut')
 df["votesqcut"] = pd.qcut(df['logvotes'], 4, labels = [1,2,3,4])
 for features in feature_list[9:]:
     X = pd.get_dummies(df[list(features)])
     index = X.columns
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X, df["votesqcut"], 
+                              test_size=0.3, random_state=42)
+    print('\n')
+    print(feature_set_index)
+    
+
+    #Logistic Regression
+    logit.fit(X_train, y_train)
+    if logit.score(X_test, y_test) > 0.66: 
+        print("LogisticRegression")
+        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
+        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
+                           index=index, columns=index))
+
+    #GaussianNB
+    gnb.fit(X_train, y_train)
+    if gnb.score(X_test, y_test) > 0.66:
+        print("GaussianNB")
+        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
+        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
+                           index=index, columns=index))
+
+    #RandomForestClassifier
+    rfc.fit(X_train, y_train)
+    if rfc.score(X_test, y_test) > 0.66:
+        print("RandomForestClassifier")
+        print(pd.Series(rfc.feature_importances_, index=index))
+        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+
+
+
+#todo: Prep for classifiers - votes + qcuts
+print('Votes QCut')
+df["votescut"] = pd.qcut(df['votes'], 4, labels = [1,2,3,4])
+for features in feature_list[9:]:
+    X = pd.get_dummies(df[list(features)])
+    index = X.columns
+    feature_set_index = feature_list.index(features)
+    X_train, X_test, y_train, y_test = tts(X, df["votescut"], 
                               test_size=0.3, random_state=42)
     print('\n')
     print(feature_set_index)
