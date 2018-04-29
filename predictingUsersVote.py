@@ -99,7 +99,7 @@ for features in feature_list[9:]:
         print(pd.Series(rfr.feature_importances_, index=index))
         print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
     
-###########try logvote
+#try logvote
 #df without vote=0 to cal log
 df = df[df['votes'] != 0]
 df['logvotes'] = np.log(df['votes'])
@@ -109,6 +109,7 @@ for features in feature_list[9:]:
     index = X.columns
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X,df['logvotes'],test_size=0.3, random_state=42)
+    print('\n')
     print(feature_set_index)
     
     #Linear Regression
@@ -117,7 +118,7 @@ for features in feature_list[9:]:
         print('Linear Regression')
         print(pd.Series(lr.coef_, index=index))
         print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-    
+        
     #Ridge Rregression
     ridge.fit(X_train, y_train)
     if lr.score(X_test, y_test) > .60:
@@ -130,34 +131,11 @@ for features in feature_list[9:]:
     if rfr.score(X_test, y_test) > .60:
         print("RandomForestRegressor")
         print(pd.Series(rfr.feature_importances_, index=index))
-    print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
 
 
-#
-#X = pd.get_dummies(df1[features])
-#X_train, X_test, y_train, y_test = tts(X,df1['logvotes'],test_size=0.3, random_state=42)
-#
-#print("LinearRegression")
-#lr.fit(X_train, y_train)
-#print(pd.Series(lr.coef_, index=features))
-#print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-#
-#print("Ridge")
-#ridge.fit(X_train, y_train)
-##print(pd.Series(ridge.coef_, index=features))
-#print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-#
-#print("RandomForestRegressor")
-#rfr.fit(X_train, y_train)
-##print(pd.Series(rfr.feature_importances_, index=features))
-#print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
-#
-#
-#
-#
-#
-#
-#
+#todo: Prep for classifiers
+
 #print("LogisticRegression")
 #logit.fit(X_train, y_train1)
 #print(logit.score(X_train, y_train1), logit.score(X_test, y_test1))
