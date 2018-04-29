@@ -74,7 +74,9 @@ df['takenon'] = df['takenon'].astype('int64')/8.64e+7
 for features in feature_list[9:]:
     X = pd.get_dummies(df[list(features)])
     index = X.columns
+    feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X,df['votes'],test_size=0.3, random_state=42)
+    print(feature_set_index)
     
     #Linear Regression
     lr.fit(X_train, y_train)
@@ -101,63 +103,74 @@ for features in feature_list[9:]:
 #df without vote=0 to cal log
 df = df[df['votes'] != 0]
 df['logvotes'] = np.log(df['votes'])
-X = pd.get_dummies(df[features])
-X_train, X_test, y_train, y_test = tts(X,df['logvotes'],test_size=0.3, random_state=42)
+print('Log Votes')
+for features in feature_list[9:]:
+    X = pd.get_dummies(df[list(features)])
+    index = X.columns
+    feature_set_index = feature_list.index(features)
+    X_train, X_test, y_train, y_test = tts(X,df['logvotes'],test_size=0.3, random_state=42)
+    print(feature_set_index)
+    
+    #Linear Regression
+    lr.fit(X_train, y_train)
+    if lr.score(X_test, y_test) > .60:
+        print('Linear Regression')
+        print(pd.Series(lr.coef_, index=index))
+        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    
+    #Ridge Rregression
+    ridge.fit(X_train, y_train)
+    if lr.score(X_test, y_test) > .60:
+        print("Ridge")
+        print(pd.Series(ridge.coef_, index=index))
+        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    
+    #Random Forest Regressor
+    rfr.fit(X_train, y_train)
+    if rfr.score(X_test, y_test) > .60:
+        print("RandomForestRegressor")
+        print(pd.Series(rfr.feature_importances_, index=index))
+    print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
 
-print("LinearRegression")
-lr.fit(X_train, y_train)
+
+#
+#X = pd.get_dummies(df1[features])
+#X_train, X_test, y_train, y_test = tts(X,df1['logvotes'],test_size=0.3, random_state=42)
+#
+#print("LinearRegression")
+#lr.fit(X_train, y_train)
 #print(pd.Series(lr.coef_, index=features))
-print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-
-print("Ridge")
-ridge.fit(X_train, y_train)
-#print(pd.Series(ridge.coef_, index=features))
-print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-
-print("RandomForestRegressor")
-rfr.fit(X_train, y_train)
-#print(pd.Series(rfr.feature_importances_, index=features))
-print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
-
-
-
-X = pd.get_dummies(df1[features])
-X_train, X_test, y_train, y_test = tts(X,df1['logvotes'],test_size=0.3, random_state=42)
-
-print("LinearRegression")
-lr.fit(X_train, y_train)
-print(pd.Series(lr.coef_, index=features))
-print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-
-print("Ridge")
-ridge.fit(X_train, y_train)
-#print(pd.Series(ridge.coef_, index=features))
-print(lr.score(X_train, y_train), lr.score(X_test, y_test))
-
-print("RandomForestRegressor")
-rfr.fit(X_train, y_train)
-#print(pd.Series(rfr.feature_importances_, index=features))
-print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
-
-
-
-
-
-
-
-print("LogisticRegression")
-logit.fit(X_train, y_train1)
-print(logit.score(X_train, y_train1), logit.score(X_test, y_test1))
-print(pd.DataFrame(confusion_matrix(y_test1, logit.predict(X_test)),
-                   index=cats, columns=cats))
-
-print("GaussianNB")
-gnb.fit(X_train, y_train1)
-print(gnb.score(X_train, y_train1), gnb.score(X_test, y_test1))
-print(pd.DataFrame(confusion_matrix(y_test1, gnb.predict(X_test)),
-                   index=cats, columns=cats))
-
-print("RandomForestClassifier")
-rfc.fit(X_train, y_train1)
-print(pd.Series(rfc.feature_importances_, index=features))
-print(rfc.score(X_train, y_train1), rfc.score(X_test, y_test1))
+#print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+#
+#print("Ridge")
+#ridge.fit(X_train, y_train)
+##print(pd.Series(ridge.coef_, index=features))
+#print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+#
+#print("RandomForestRegressor")
+#rfr.fit(X_train, y_train)
+##print(pd.Series(rfr.feature_importances_, index=features))
+#print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+#
+#
+#
+#
+#
+#
+#
+#print("LogisticRegression")
+#logit.fit(X_train, y_train1)
+#print(logit.score(X_train, y_train1), logit.score(X_test, y_test1))
+#print(pd.DataFrame(confusion_matrix(y_test1, logit.predict(X_test)),
+#                   index=cats, columns=cats))
+#
+#print("GaussianNB")
+#gnb.fit(X_train, y_train1)
+#print(gnb.score(X_train, y_train1), gnb.score(X_test, y_test1))
+#print(pd.DataFrame(confusion_matrix(y_test1, gnb.predict(X_test)),
+#                   index=cats, columns=cats))
+#
+#print("RandomForestClassifier")
+#rfc.fit(X_train, y_train1)
+#print(pd.Series(rfc.feature_importances_, index=features))
+#print(rfc.score(X_train, y_train1), rfc.score(X_test, y_test1))
