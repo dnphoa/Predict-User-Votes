@@ -86,7 +86,7 @@ for features in feature_list[9:]:
     score = lr.score(X_test, y_test)
     if score > best:
         best = score
-        best_info = ['Linear Regression', feature_set_index]
+        best_info = ['Votes Regressions', 'Linear Regression', feature_set_index]
 #    if lr.score(X_test, y_test) > .75:
 #        print("LinearRegression")
 #        print(pd.Series(lr.coef_, index=index))
@@ -97,7 +97,7 @@ for features in feature_list[9:]:
     score = lr.score(X_test, y_test)
     if score > best:
         best = score
-        best_info = ['Ridge Regression', feature_set_index]
+        best_info = ['Votes Regressions','Ridge Regression', feature_set_index]
 #    if lr.score(X_test, y_test) > .75:
 #        print("Ridge")
 #        print(pd.Series(ridge.coef_, index=index))
@@ -108,7 +108,7 @@ for features in feature_list[9:]:
     score = rfr.score(X_test, y_test)
     if score > best:
         best = score
-        best_info = ['Random Forest Regressor', feature_set_index]
+        best_info = ['Votes Regressions','Random Forest Regressor', feature_set_index]
 #    if rfr.score(X_test, y_test) > .75:
 #        print("RandomForestRegressor")
 #        print(pd.Series(rfr.feature_importances_, index=index))
@@ -119,35 +119,46 @@ for features in feature_list[9:]:
 print('Log Votes Regression')
 df = df[df['votes'] != 0]
 df['logvotes'] = np.log(df['votes'])
-print('Log Votes')
 for features in feature_list[9:]:
     X = pd.get_dummies(df[list(features)])
     index = X.columns
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X,df['logvotes'],test_size=0.3, random_state=42)
-    print('\n')
+#    print('\n')
     print(feature_set_index)
     
     #Linear Regression
     lr.fit(X_train, y_train)
-    if lr.score(X_test, y_test) > .75:
-        print('Linear Regression')
-        print(pd.Series(lr.coef_, index=index))
-        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    score = lr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Regression', 'Linear Regression', feature_set_index]
+#    if lr.score(X_test, y_test) > .75:
+#        print('Linear Regression')
+#        print(pd.Series(lr.coef_, index=index))
+#        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
         
     #Ridge Rregression
     ridge.fit(X_train, y_train)
-    if lr.score(X_test, y_test) > .75:
-        print("Ridge")
-        print(pd.Series(ridge.coef_, index=index))
-        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    score = lr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Regression', 'Ridge Regression', feature_set_index]
+#    if lr.score(X_test, y_test) > .75:
+#        print("Ridge")
+#        print(pd.Series(ridge.coef_, index=index))
+#        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
     
     #Random Forest Regressor
     rfr.fit(X_train, y_train)
-    if rfr.score(X_test, y_test) > .75:
-        print("RandomForestRegressor")
-        print(pd.Series(rfr.feature_importances_, index=index))
-        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+    score = rfr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Regression', 'Random Forest Regressor', feature_set_index]
+#    if rfr.score(X_test, y_test) > .75:
+#        print("RandomForestRegressor")
+#        print(pd.Series(rfr.feature_importances_, index=index))
+#        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
 
 
 #todo: Prep for classifiers - log votes + qcuts
@@ -159,32 +170,44 @@ for features in feature_list[9:]:
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X, df["votesqcut"], 
                               test_size=0.3, random_state=42)
-    print('\n')
+#    print('\n')
     print(feature_set_index)
     
 
     #Logistic Regression
     logit.fit(X_train, y_train)
-    if logit.score(X_test, y_test) > 0.75: 
-        print("LogisticRegression")
-        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
-                           index=index, columns=index))
+    score = logit.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes QCut', 'Logistic Regression', feature_set_index]
+#    if logit.score(X_test, y_test) > 0.75: 
+#        print("LogisticRegression")
+#        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
+#                           index=index, columns=index))
 
     #GaussianNB
     gnb.fit(X_train, y_train)
-    if gnb.score(X_test, y_test) > 0.75:
-        print("GaussianNB")
-        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
-                           index=index, columns=index))
+    score = gnb.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes QCut', 'GaussianNB', feature_set_index]
+#    if gnb.score(X_test, y_test) > 0.75:
+#        print("GaussianNB")
+#        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
+#                           index=index, columns=index))
 
     #RandomForestClassifier
     rfc.fit(X_train, y_train)
-    if rfc.score(X_test, y_test) > 0.75:
-        print("RandomForestClassifier")
-        print(pd.Series(rfc.feature_importances_, index=index))
-        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+    score = rfc.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes QCut', 'Random Forest Classifier', feature_set_index]
+#    if rfc.score(X_test, y_test) > 0.75:
+#        print("RandomForestClassifier")
+#        print(pd.Series(rfc.feature_importances_, index=index))
+#        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
 
 
 
@@ -197,32 +220,44 @@ for features in feature_list[9:]:
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X, df["votescut"], 
                               test_size=0.3, random_state=42)
-    print('\n')
+#    print('\n')
     print(feature_set_index)
     
 
     #Logistic Regression
     logit.fit(X_train, y_train)
-    if logit.score(X_test, y_test) > 0.75: 
-        print("LogisticRegression")
-        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
-                           index=index, columns=index))
+    score = logit.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes QCut', 'Logistic Regression', feature_set_index]
+#    if logit.score(X_test, y_test) > 0.75: 
+#        print("LogisticRegression")
+#        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
+#                           index=index, columns=index))
 
     #GaussianNB
     gnb.fit(X_train, y_train)
-    if gnb.score(X_test, y_test) > 0.75:
-        print("GaussianNB")
-        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
-                           index=index, columns=index))
+    score = gnb.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes QCut', 'GaussianNB', feature_set_index]
+#    if gnb.score(X_test, y_test) > 0.75:
+#        print("GaussianNB")
+#        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
+#                           index=index, columns=index))
 
     #RandomForestClassifier
     rfc.fit(X_train, y_train)
-    if rfc.score(X_test, y_test) > 0.75:
-        print("RandomForestClassifier")
-        print(pd.Series(rfc.feature_importances_, index=index))
-        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+    score = rfc.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes QCut', 'Random Forest Classifier', feature_set_index]
+#    if rfc.score(X_test, y_test) > 0.75:
+#        print("RandomForestClassifier")
+#        print(pd.Series(rfc.feature_importances_, index=index))
+#        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
 
 
 #todo: Prep for classifiers - log votes + pd.cut
@@ -235,34 +270,46 @@ for features in feature_list[9:]:
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X, df["logvotescut"], 
                               test_size=0.3, random_state=42)
-    print('\n')
+#    print('\n')
     print(feature_set_index)
     
 
     #Logistic Regression
     logit.fit(X_train, y_train)
-    if logit.score(X_test, y_test) > 0.75: 
-        print("LogisticRegression")
-        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
-                           index=cats, columns=cats))
+    score = logit.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Cut', 'Logistic Regression', feature_set_index]
+#    if logit.score(X_test, y_test) > 0.75: 
+#        print("LogisticRegression")
+#        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
+#                           index=cats, columns=cats))
 
     #GaussianNB
     gnb.fit(X_train, y_train)
-    if gnb.score(X_test, y_test) > 0.75:
-        print("GaussianNB")
-        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
-                           index=cats, columns=cats))
+    score = gnb.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Cut', 'GaussianNB', feature_set_index]
+#    if gnb.score(X_test, y_test) > 0.75:
+#        print("GaussianNB")
+#        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
+#                           index=cats, columns=cats))
 
     #RandomForestClassifier
     rfc.fit(X_train, y_train)
-    if rfc.score(X_test, y_test) > 0.75:
-        print("RandomForestClassifier")
-        #print(pd.Series(rfc.feature_importances_, index=index))
-        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
-                           index=cats, columns=cats))
+    score = rfc.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Log Votes Cut', 'Random Forest Classifier', feature_set_index]
+#    if rfc.score(X_test, y_test) > 0.75:
+#        print("RandomForestClassifier")
+#        #print(pd.Series(rfc.feature_importances_, index=index))
+#        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
+#                           index=cats, columns=cats))
 
 #todo: Prep for classifiers - votes + pd.cut
 print('Votes Cut')
@@ -274,31 +321,44 @@ for features in feature_list[9:]:
     feature_set_index = feature_list.index(features)
     X_train, X_test, y_train, y_test = tts(X, df["votescut"], 
                               test_size=0.3, random_state=42)
-    print('\n')
+#    print('\n')
     print(feature_set_index)
     
 
     #Logistic Regression
     logit.fit(X_train, y_train)
-    if logit.score(X_test, y_test) > 0.75: 
-        print("LogisticRegression")
-        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
-                           index=cats, columns=cats))
+    score = logit.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes Cut', 'Logistic Regression', feature_set_index]
+#    if logit.score(X_test, y_test) > 0.75: 
+#        print("LogisticRegression")
+#        print(logit.score(X_train, y_train), logit.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, logit.predict(X_test)),
+#                           index=cats, columns=cats))
 
     #GaussianNB
     gnb.fit(X_train, y_train)
-    if gnb.score(X_test, y_test) > 0.75:
-        print("GaussianNB")
-        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
-                          index=cats, columns=cats))
+    score = gnb.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes Cut', 'GaussianNB', feature_set_index]
+#    if gnb.score(X_test, y_test) > 0.75:
+#        print("GaussianNB")
+#        print(gnb.score(X_train, y_train), gnb.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, gnb.predict(X_test)),
+#                          index=cats, columns=cats))
 
     #RandomForestClassifier
     rfc.fit(X_train, y_train)
-    if rfc.score(X_test, y_test) > 0.75:
-        print("RandomForestClassifier")
-        #print(pd.Series(rfc.feature_importances_, index=index))
-        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
-        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
-                          index=cats, columns=cats))
+    score = rfc.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Votes Cut', 'Random Forest Classifier', feature_set_index]
+#    if rfc.score(X_test, y_test) > 0.75:
+#        print("RandomForestClassifier")
+#        #print(pd.Series(rfc.feature_importances_, index=index))
+#        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+#        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
+#                          index=cats, columns=cats))
+
