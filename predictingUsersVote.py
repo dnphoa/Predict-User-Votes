@@ -113,6 +113,11 @@ for features in feature_list[9:]:
 #        print("RandomForestRegressor")
 #        print(pd.Series(rfr.feature_importances_, index=index))
 #        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+#Best = 0.4651750177793057
+    
+    
+    
+    
     
 #try logvote
 #df without vote=0 to cal log
@@ -159,6 +164,12 @@ for features in feature_list[9:]:
 #        print("RandomForestRegressor")
 #        print(pd.Series(rfr.feature_importances_, index=index))
 #        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+#best = 0.51335208676310073
+
+
+
+
+
 
 
 #todo: Prep for classifiers - log votes + qcuts
@@ -210,6 +221,12 @@ for features in feature_list[9:]:
 #        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
 
 
+#best = above 
+
+
+
+
+
 
 #todo: Prep for classifiers - votes + qcuts
 print('Votes QCut')
@@ -258,6 +275,12 @@ for features in feature_list[9:]:
 #        print("RandomForestClassifier")
 #        print(pd.Series(rfc.feature_importances_, index=index))
 #        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
+#best = .72930380050929711
+#['Votes QCut','Random Forest Classifier',255]
+
+
+
+
 
 
 #todo: Prep for classifiers - log votes + pd.cut
@@ -310,6 +333,12 @@ for features in feature_list[9:]:
 #        print(rfc.score(X_train, y_train), rfc.score(X_test, y_test))
 #        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
 #                           index=cats, columns=cats))
+#best = .747681733737567867
+#['Log Votes Cut','Random Forest Classifier',250]
+
+
+
+
 
 #todo: Prep for classifiers - votes + pd.cut
 print('Votes Cut')
@@ -362,3 +391,4 @@ for features in feature_list[9:]:
 #        print(pd.DataFrame(confusion_matrix(y_test, rfc.predict(X_test)),
 #                          index=cats, columns=cats))
 
+#Best: above
