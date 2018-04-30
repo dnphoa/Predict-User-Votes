@@ -64,7 +64,8 @@ ridge = Ridge(50)
 rfr = RandomForestRegressor()
 rfc = RandomForestClassifier()
 gnb = GaussianNB()
-
+best = 0
+best_info = []
 
 #split data into training and testing sets
 columns = ['etitle','region','takenon','votedon','viewed','n_comments','tenure','etitle_author_count']
@@ -82,24 +83,36 @@ for features in feature_list[9:]:
     
     #Linear Regression
     lr.fit(X_train, y_train)
-    if lr.score(X_test, y_test) > .75:
-        print("LinearRegression")
-        print(pd.Series(lr.coef_, index=index))
-        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    score = lr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Linear Regression', feature_set_index]
+#    if lr.score(X_test, y_test) > .75:
+#        print("LinearRegression")
+#        print(pd.Series(lr.coef_, index=index))
+#        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
     
     #Ridge Regression
     ridge.fit(X_train, y_train)
-    if lr.score(X_test, y_test) > .75:
-        print("Ridge")
-        print(pd.Series(ridge.coef_, index=index))
-        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
+    score = lr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Ridge Regression', feature_set_index]
+#    if lr.score(X_test, y_test) > .75:
+#        print("Ridge")
+#        print(pd.Series(ridge.coef_, index=index))
+#        print(lr.score(X_train, y_train), lr.score(X_test, y_test))
     
     #Random Forest Regressor
     rfr.fit(X_train, y_train)
-    if rfr.score(X_test, y_test) > .75:
-        print("RandomForestRegressor")
-        print(pd.Series(rfr.feature_importances_, index=index))
-        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
+    score = rfr.score(X_test, y_test)
+    if score > best:
+        best = score
+        best_info = ['Random Forest Regressor', feature_set_index]
+#    if rfr.score(X_test, y_test) > .75:
+#        print("RandomForestRegressor")
+#        print(pd.Series(rfr.feature_importances_, index=index))
+#        print(rfr.score(X_train, y_train), rfr.score(X_test, y_test))
     
 #try logvote
 #df without vote=0 to cal log
