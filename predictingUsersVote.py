@@ -245,7 +245,7 @@ for features in feature_list[9:]:
     X = pd.get_dummies(df[list(features)])
     index = X.columns
     feature_set_index = feature_list.index(features)
-    X_train, X_test, y_train, y_test = tts(X, df["votescut"], 
+    X_train, X_test, y_train, y_test = tts(X, df["votesqcut"], 
                               test_size=0.3, random_state=42)
 #    print('\n')
     print(feature_set_index)
@@ -352,7 +352,7 @@ for features in feature_list[9:]:
 
 #todo: Prep for classifiers - votes + pd.cut
 print('Votes Cut')
-df["votescut"] = pd.cut(df['votes'], [-np.inf, 89.15384615, 177.30769231, 265.46153846, np.inf], labels = [1,2,3,4])
+df['votescut'] = pd.cut(df['votes'], [-np.inf, 89.15384615, 177.30769231, 265.46153846, np.inf], labels = [1,2,3,4])
 cats = df['votescut'].cat.categories
 for features in feature_list[9:]:
     X = pd.get_dummies(df[list(features)])
