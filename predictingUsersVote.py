@@ -57,6 +57,15 @@ df.drop(['min','max'], axis=1, inplace=True)
 #tenure values are negative, turn into positive
 df['tenure'] = df['tenure']*-1
 
+#convert datetime values into day of the week
+df['votedon_weekday'] = df['votedon'].dt.dayofweek
+df['takenon_weekday'] = df['takenon'].dt.dayofweek
+
+
+#convert day of the week into bool - weekday = 1, weekend = 0
+df = df.assign(takenon_weekday_bool = lambda x: x.takenon_weekday < 5)
+df = df.assign(votedon_weekday_bool = lambda x: x.votedon_weekday < 5)
+
 #models
 lr = LinearRegression()
 logit = LogisticRegression()
@@ -68,7 +77,8 @@ best = 0
 best_info = []
 
 #split data into training and testing sets
-columns = ['etitle','region','takenon','votedon','viewed','n_comments','tenure','etitle_author_count']
+#columns = ['etitle','region','takenon','votedon','viewed','n_comments','tenure','etitle_author_count']
+columns = ['etitle','region','viewed','n_comments','tenure','etitle_author_count','takenon_weekday_bool','votedon_weekday_bool']
 feature_list = list(powerset(columns))
 df['votedon'] = df['votedon'].astype('int64')/8.64e+7
 df['takenon'] = df['takenon'].astype('int64')/8.64e+7
